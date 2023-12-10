@@ -1,0 +1,297 @@
+﻿@model IEnumerable<MUANGAY.Models.DONHANG>
+
+@{
+    ViewBag.Title = "QuanLyDonHang";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
+    // Sort the data by NgayBD (start date)
+    var sortedModel = Model?.OrderByDescending(a => a.NgayDatHang);
+}
+
+<!-- Rest of your code remains unchanged -->
+<!-- Place this at the end of your view -->
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+<!-- Add a common script to initialize CKEditor once -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize CKEditor for each instance
+        var ckeditorInstances = document.querySelectorAll('.ckeditor');
+
+        for (var i = 0; i < ckeditorInstances.length; i++) {
+            var masp = ckeditorInstances[i].getAttribute('data-masp');
+
+            ClassicEditor
+                .create(ckeditorInstances[i])
+                .then(editor => {
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    });
+
+    // Function to update CKEditor content based on the selected modal
+    function updateCKEditorContent(modalId, content) {
+        const editor = ClassicEditor.instances.find(instance => instance.sourceElement.id === 'mota-' + modalId);
+        const modalBody = document.getElementById(modalId).querySelector('.modal-body');
+        const ckeditorDiv = modalBody.querySelector('.ckeditor');
+
+        // Update CKEditor content for the specific modal
+        editor.setData(content, ckeditorDiv);
+    }
+</script>
+
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div id="error-message" class="col-md-12 alert alert-danger thongbao" style="margin-top: 50px; padding: 40px;">
+        <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #ff0000; padding-right: 20px;"></i> @Html.Raw(ViewBag.ErrorMessage)
+        <br />
+        Không thể xóa đơn hàng này!!!
+    </div>
+}
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            document.getElementById('error-message').style.display = 'none';
+        }, 2000); // 2000 milliseconds = 2 seconds
+    });
+</script>
+
+
+
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div id="success-message" class="col-md-12 alert alert-success thongbao" style="margin-top: 50px; padding: 40px;">
+        <i class="fa-solid fa-circle-check fa-2xl" style="color: #00ff11; padding-right: 20px;"></i> @Html.Raw(TempData["SuccessMessage"])
+    </div>
+}
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set a timeout to hide the success message after 3 seconds
+        setTimeout(function () {
+            document.getElementById('success-message').style.display = 'none';
+        }, 2000);
+    });
+</script>
+
+
+
+
+
+@*Xây dựn một helper tùy chỉnh để cắt độ dài chuỗi*@
+@helper Truncate(string s, int length)
+{
+    if (s.Length < length)
+    {
+        @s
+    }
+    else
+    {
+        @s.Substring(0, length)<text>...</text>
+    }
+
+}
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>DANH SÁCH ĐƠN ĐẶT HÀNG</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Admin/Home/Home">Admin</a></li>
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item active">Danh sách đơn hàng</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body p-3">
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable p-5">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Mã khách hàng</th>
+                                    <th>Ngày đặt hàng</th>
+                                    <th>Ngày giao hàng</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Thanh toán</th>
+                                    <th>Tình trạng</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var dh in sortedModel)
+                                {
+                                    <tr>
+                                        <td>@dh.MaDH</td>
+                                        <td>@dh.MaKH</td>
+                                        <td>@dh.NgayDatHang</td>
+                                        <td>@dh.NgayGiaoHang</td>
+                                        <td>@dh.TongTien</td>
+                                        <td>@dh.ThanhToan</td>
+                                        <td>@dh.TrangThai</td>
+
+
+                                        <!--EYE-->
+                                        <td>
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-eye-@dh.MaDH">
+                                                <i class="b-light bi-eye"></i>
+                                            </button>
+                                            <!-- Hien form thong tin -->
+                                            <div class="modal fade" id="modal-eye-@dh.MaDH" tabindex="-1">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="text-center">THÔNG TIN ĐƠN HÀNG</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <!-- Nội dung hiện ở đây-->
+                                                                <p><strong>Mã đơn hàng:</strong> @dh.MaDH</p>
+                                                                <p><strong>Mã khách hàng:</strong> @dh.MaKH</p>
+                                                                <p><strong>Ngày đặt hàng:</strong> @dh.NgayDatHang</p>
+                                                                <p><strong>Ngày giao hàng:</strong> @dh.NgayGiaoHang</p>
+                                                                <p><strong>Tổng tiền</strong> @dh.TongTien</p>
+                                                                <p><strong>Thanh toán:</strong> @dh.ThanhToan</p>
+                                                                <p><strong>Tình trạng đơn hàng:</strong> @dh.TrangThai </p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Inside your modal -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- End Vertically centered Modal-->
+                                        </td>
+                                        <!--EDIT-->
+                                        <td>
+                                            <!-- Extra Large Modal -->
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modal-edit-@dh.MaDH">
+                                                <i class="b-solid bi-pen"></i>
+                                            </button>
+
+                                            @using (Html.BeginForm("EditDH", "Home", FormMethod.Post, new
+                                            {
+                                                @enctype =
+                                            "multipart/form-data"
+                                            }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="modal fade" id="modal-edit-@dh.MaDH" tabindex="-1">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="text-center">CHỈNH SỬA THÔNG TIN ĐƠN HÀNG</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Mã đơn hàng:</b>
+                                                                    <input type="text" class="form-control" name="fmadh" value="@dh.MaDH" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Ngày đặt hàng:</b>
+                                                                    <input type="text" class="form-control" value="@dh.NgayDatHang" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Tổng tiền:</b>
+                                                                    <input type="text" class="form-control" value="@dh.TongTien" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Trạng thái:</b>
+                                                                    <input type="text" class="form-control" value="@dh.TrangThai" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Đã Thanh Toán: </b>
+                                                                    <input type="checkbox" name="ftt" @if ((bool)dh.ThanhToan) { <text> checked</text> } value="true" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                                                                <!-- Add a button for updating -->
+                                                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </td>
+                                        <!--DELETE-->
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-@dh.MaDH">
+                                                <i class="b-solid bi-trash"></i>
+                                            </button>
+                                            <!-- Hien form thong tin -->
+                                            <form class="row g-3 m-4" action="@Url.Action("DeleteDH", "Home")" method="post">
+                                                <div class="modal fade" id="modal-delete-@dh.MaDH" tabindex="-1">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="text-center">XÓA THÔNG TIN ĐƠN HÀNG</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Nội dung hiện ở đây-->
+                                                                <h3 style="color: red;">Bạn có chắc chắn muốn xóa đơn hàng này không?</h3>
+                                                                <p><strong>Mã đơn hàng:</strong> @dh.MaDH</p>
+                                                                <input type="hidden" name="madh" value="@dh.MaDH" /> <!-- Add this line -->
+                                                                <p><strong>Mã khách hàng:</strong> @dh.MaKH</p>
+                                                                <p><strong>Ngày đặt hàng:</strong> @dh.NgayDatHang</p>
+                                                                <p><strong>Ngày giao hàng:</strong> @dh.NgayGiaoHang</p>
+                                                                <p><strong>Tổng tiền</strong> @dh.TongTien</p>
+                                                                <p><strong>Thanh toán:</strong> @dh.ThanhToan</p>
+                                                                <p><strong>Tình trạng đơn hàng:</strong> @dh.TrangThai </p>
+
+                                                            </div>
+                                                            <!-- Inside your modal -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                                                                <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+<!-- End #main -->

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MUANGAY.Models.PHANLOAICHITIET>
+
+
+<ul class="list-group">
+    <li class="list-group-item active" style="font-weight:bold; text-align:center">
+        DANH MỤC SẢN PHẨM
+    </li>
+    @foreach (var plct in Model)
+    {
+        var soLuongSanPham = ViewData["SoLuongSanPham_" + plct.MaPLCT];
+
+        <a href="@Url.Action("PhanLoaiSP", "MUANGAY", new { id = plct.MaPLCT, maPL = plct.MaPL, tenPLCT = plct.TenPLCT })" class="list-group-item">
+            @plct.TenPLCT <span class="badge border border-secondary rounded-circle" style="color: green; float: right;">@soLuongSanPham </span>
+        </a>
+    }
+</ul>
+

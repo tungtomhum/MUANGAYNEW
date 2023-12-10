@@ -1,0 +1,58 @@
+﻿
+@model IEnumerable<MUANGAY.Models.PHANLOAICHITIET>
+
+<style type="text/css">
+    .chontrang {
+        width: 95%;
+        margin: 0px auto;
+    }
+
+    .text-decoration-none {
+        color: black;
+        text-align: center;
+    }
+
+    .img-fluid {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        object-position: center center;
+    }
+
+    .baongoai {
+        transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng transition */
+    }
+
+        .baongoai:hover {
+            background-color: whitesmoke;
+            transform: scale(1.1); /* Phóng to khi di chuột qua */
+        }
+</style>
+
+<!-- Categories Start -->
+<div class="pt-5 chontrang">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="pr-3">DANH MỤC SẢN PHẨM</span>
+    </h2>
+    <hr />
+    <div class="row px-xl-5 pb-3">
+        @foreach (var plct in Model)
+        {
+            var soLuongSanPham = ViewData["SoLuongSanPham_" + plct.MaPLCT];
+
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1 baongoai">
+                <a class="text-decoration-none" href="@Url.Action("LocPLCT", "MUANGAY", new { maPLCT = plct.MaPLCT })">
+                    <div class="cat-item d-flex align-items-center m-4">
+                        <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                            <img class="img-fluid" src="~/img/@plct.AnhPLCT" alt="@plct.TenPLCT">
+                        </div>
+                        <div class="flex-fill pl-3">
+                            <h6 style="text-transform: uppercase;">@plct.TenPLCT</h6>
+                            <small class="text-body">@soLuongSanPham Sản phẩm</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

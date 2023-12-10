@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MUANGAY.Models.SANPHAM>
+
+<style>
+    .range-slider-container {
+        text-align: center;
+    }
+
+    .price-range {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    #selectedMinPrice, #selectedMaxPrice {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<form method="post" action="@Url.Action("SanPhamTheoGia", "MUANGAY")" style="width: 85%; margin: 0px auto;">
+    <ul class="list-group mt-5">
+        <li class="list-group-item active" style="font-weight:bold; text-align:center">
+            CHỌN GIÁ TIỀN
+        </li>
+        <div class="range-slider-container bg-light">
+            <label for="minPrice">Từ:</label>
+            <input type="range" id="minPrice" name="minPrice" class="price-range" min="0" max="50000000" step="50000" value="0">
+            <span id="selectedMinPrice">0 VNĐ</span>
+        </div>
+        <div class="range-slider-container bg-light">
+            <label for="maxPrice">Đến:</label>
+            <input type="range" id="maxPrice" name="maxPrice" class="price-range" min="0" max="50000000" step="50000" value="0">
+            <span id="selectedMaxPrice">0 VNĐ</span>
+        </div>
+        <li class="list-group-item bg-light">
+            <input style="float: right;" class="btn btn-success" type="submit" name="Lọc" value="Lọc" />
+        </li>
+    </ul>
+</form>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var minPriceRange = document.getElementById("minPrice");
+        var maxPriceRange = document.getElementById("maxPrice");
+        var selectedMinPrice = document.getElementById("selectedMinPrice");
+        var selectedMaxPrice = document.getElementById("selectedMaxPrice");
+
+        // Update the selected min price when the min range slider value changes
+        minPriceRange.addEventListener("input", function () {
+            selectedMinPrice.textContent = formatCurrency(minPriceRange.value) + " VNĐ";
+            // Ensure that min price is less than or equal to max price
+            maxPriceRange.min = minPriceRange.value;
+            if (parseInt(maxPriceRange.value) < parseInt(minPriceRange.value)) {
+                maxPriceRange.value = minPriceRange.value;
+                selectedMaxPrice.textContent = formatCurrency(minPriceRange.value) + " VNĐ";
+            }
+        });
+
+        // Update the selected max price when the max range slider value changes
+        maxPriceRange.addEventListener("input", function () {
+            selectedMaxPrice.textContent = formatCurrency(maxPriceRange.value) + " VNĐ";
+            // Ensure that max price is greater than or equal to min price
+            minPriceRange.max = maxPriceRange.value;
+            if (parseInt(minPriceRange.value) > parseInt(maxPriceRange.value)) {
+                minPriceRange.value = maxPriceRange.value;
+                selectedMinPrice.textContent = formatCurrency(maxPriceRange.value) + " VNĐ";
+            }
+        });
+
+        // Format currency with commas
+        function formatCurrency(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    });
+</script>

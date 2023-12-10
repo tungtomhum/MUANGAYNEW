@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MUANGAY - Shopping thả ga, không lo về giá!</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="~/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Thêm CSS để ẩn mặc định các slides và thêm hiệu ứng transition */
+        .mySlides {
+            display: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Hiển thị điểm đánh dấu dưới dạng chấm tròn */
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        /* Hiển thị một số điểm đánh dấu khi hoạt động */
+        .activea {
+            background-color: #717171;
+        }
+
+        .khungsp {
+            background-color: white;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 10%;
+            position: relative; /* Thêm thuộc tính position */
+        }
+
+            .khungsp:hover {
+                transform: scale(1.1); /* Phóng to khi di chuột qua */
+            }
+
+        .product-img-container {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+
+            .product-img-container:hover .img-overlay {
+                opacity: 1;
+            }
+
+        .img-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgb(255, 255, 255, 0.55); /* Màu nền làm mờ */
+            opacity: 0; /* Ẩn ban đầu */
+            transition: opacity 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-action {
+            opacity: 0;
+            transition: .3s;
+            padding-top: 200px;
+        }
+
+        .product-img-container:hover .product-action {
+            opacity: 1;
+        }
+
+        .product-action a {
+            color: black;
+            margin: 0 5px;
+        }
+
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+            .pagination > li {
+                display: inline;
+            }
+
+                .pagination > li > a,
+                .pagination > li > span {
+                    position: relative;
+                    float: left;
+                    padding: 6px 12px;
+                    line-height: 1.428571429;
+                    text-decoration: none;
+                    color: black;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    margin-left: -1px;
+                }
+
+                .pagination > li:first-child > a,
+                .pagination > li:first-child > span {
+                    margin-left: 0;
+                    border-bottom-left-radius: 4px;
+                    border-top-left-radius: 4px;
+                }
+
+                .pagination > li:last-child > a,
+                .pagination > li:last-child > span {
+                    border-bottom-right-radius: 4px;
+                    border-top-right-radius: 4px;
+                }
+
+                .pagination > li > a:hover,
+                .pagination > li > span:hover,
+                .pagination > li > a:focus,
+                .pagination > li > span:focus {
+                    background-color: #eee;
+                }
+
+            .pagination > .active > a,
+            .pagination > .active > span,
+            .pagination > .active > a:hover,
+            .pagination > .active > span:hover,
+            .pagination > .active > a:focus,
+            .pagination > .active > span:focus {
+                z-index: 2;
+                color: #fff;
+                background-color: chocolate;
+                border-color: chocolate;
+                cursor: default;
+            }
+
+            .pagination > .disabled > span,
+            .pagination > .disabled > a,
+            .pagination > .disabled > a:hover,
+            .pagination > .disabled > span:hover,
+            .pagination > .disabled > a:focus,
+            .pagination > .disabled > span:focus {
+                color: #999;
+                background-color: #fff;
+                border-color: #ddd;
+                cursor: not-allowed;
+            }
+
+        .text-truncate {
+            color: black;
+        }
+
+            .text-truncate:hover {
+                color: chocolate;
+            }
+
+        .thongbao-container {
+            position: relative;
+        }
+
+        .thongbao {
+            padding-top: 10px;
+            text-align: center;
+            z-index: 100;
+            border: hidden;
+            width: 350px;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: top 0.3s ease; /* Thêm hiệu ứng transition */
+        }
+
+        #goToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            background-color: #5ca8e7;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    @Html.Action("NavPartial", "MUANGAY")
+    @Html.Action("BannerPartial", "MUANGAY")
+    <!--PLCT-->
+    @Html.Action("PLCTPartial", "MUANGAY")
+    @Html.Action("ChonTienPartial", "MUANGAY")
+    <!--Body-->
+    <div id="success-message" class="col-md-12 alert alert-success thongbao" style="display:none;">
+        <i class="fa-solid fa-check fa-2xl" style="color: #00e61b;"></i> <br /> Thêm vào giỏ hàng thành công. <br />Vui lòng kiểm tra giỏ hàng!
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    @Html.Action("FooterPartial", "MUANGAY")
+
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/lib/counterup/counterup.min.js"></script>
+    <script src="~/lib/parallax/parallax.min.js"></script>
+    <script src="~/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/js/main.js"></script>
+
+
+</body>
+</html>

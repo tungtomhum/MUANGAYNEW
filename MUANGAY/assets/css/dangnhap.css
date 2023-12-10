@@ -1,0 +1,133 @@
+*{
+    margin:0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+section{
+  margin-top: -30px;
+  height: 550px;
+    width: 40%;
+    background-color: rgba(245, 243, 243, 0.7);
+    border-radius: 10px;
+}
+.noi-dung{
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+}
+.logo{
+    max-width: 45%;
+}
+.noi-dung .form h2{
+    text-align: center;
+    color: #607d8b;
+    font-weight: 500;
+    font-size: 25px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    border-bottom: 4px solid #44caca;
+    letter-spacing: 1px;
+}
+
+.noi-dung .form .input-form{
+    margin-bottom: 20px;
+}
+.noi-dung .form .input-form span{
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #607db8;
+    letter-spacing: 1px;
+     }
+.noi-dung .form .input-form input{
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid #607d8b;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: rgb(0, 0, 0);
+    background: transparent;
+    border-radius: 30px;
+}
+.noi-dung .form .input-form input[type="submit"]{
+    background: #44caca;
+    text-transform: uppercase;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.12),
+               0 2px 2px rgba(0,0,0,0.12),
+               0 4px 4px rgba(0,0,0,0.12),
+              0 8px 8px rgba(0,0,0,0.12),
+              0 16px 16px rgba(0,0,0,0.12);
+  }
+  .noi-dung .form .input-form input[type="submit"]:hover{
+    background: #f53676b7;
+    font-size: larger;
+  } 
+.noi-dung .form .nho-dang-nhap{
+    margin-bottom: 10px;
+    color: #607d8b;
+    font-size: 14px;
+}
+.noi-dung .form .input-form p{
+    color: #607d8b;
+}
+.noi-dung .form .input-form p a{
+    color: cadetblue;
+}
+.noi-dung .form .input-form p a:hover {
+    color: rgba(238, 83, 27, 0.685);
+    font-size: large;
+  }
+.noi-dung .form h3{
+    color: #607d8b;
+    text-align: center;
+    font-weight: 500;
+}
+.noi-dung .form .icon-dang-nhap{
+    display: flex;
+}
+.noi-dung .form .icon-dang-nhap li{
+    list-style: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.noi-dung .form .icon-dang-nhap li i{
+    font-size: 24px;
+}
+@media (max-width: 768px){
+    section {
+        margin-top: -50px;
+        width: 90%;
+        box-sizing: border-box;
+    }
+    section .noi-dung{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    section .noi-dung .form{
+        width: 100%;
+        margin: 15px;
+    }
+    section .noi-dung .form h3{
+        color: #607d8b;
+        text-align: center;
+        margin: 30px 0 10px;
+        font-weight: 500;
+    }
+  }

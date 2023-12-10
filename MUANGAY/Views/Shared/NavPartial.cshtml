@@ -1,0 +1,84 @@
+﻿<style>
+    .input-group {
+        display: flex;
+        overflow: hidden;
+        border-radius: 10px; /* Định dạng bo tròn các góc */
+    }
+
+    .form-control {
+        border-radius: 10px 0 0 10px; /* Bo tròn góc bên trái của input */
+    }
+
+    .input-group-btn {
+        border-radius: 0 10px 10px 0; /* Bo tròn góc bên phải của button */
+    }
+
+    .btn {
+        border-radius: 10px; /* Bo tròn góc của button */
+    }
+
+    /* Hiệu ứng khi di chuột vào input hoặc button */
+    .input-group,
+    .input-group-btn {
+        transition: box-shadow 0.3s ease-in-out;
+    }
+
+        .input-group:hover,
+        .input-group-btn:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+</style>
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+</div>
+<!-- Spinner End -->
+<!-- Topbar Start -->
+<div class="container-fluid text-dark px-0 py-3" style="background-color: whitesmoke;">
+    <div class="row gx-0 d-none d-lg-flex">
+        <div class="col-lg-7 px-5 text-start">
+            @using (Html.BeginForm("TimKiem", "MUANGAY", FormMethod.Post, new { @class = "navbar-form" }))
+            {
+                <div class="input-group">
+                    <input class="form-control search" type="text" name="tuKhoa" placeholder="Tìm kiếm sản phẩm ..." required />
+                    <span class="input-group-btn bg-danger">
+                        <button class="btn search-submit" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </span>
+                </div>
+            }
+        </div>
+        <div class="col-lg-5 px-5 text-end">
+            <div class="h-100 d-inline-flex align-items-center me-4">
+                <span class="fa fa-phone-alt me-2"></span>
+                <span>0919 208 873</span>
+            </div>
+            <div class="h-100 d-inline-flex align-items-center">
+                <span class="far fa-envelope me-2"></span>
+                <span>2124802010859@student.tdmu.edu.vn</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 py-3">
+    <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <img style="width: 86%;" src="~/img/logo.png" alt="Alternate Text" />
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="/" class="nav-item nav-link active">HOME</a>
+            <a href="@Url.Action("SanPham", "MUANGAY", new { maPL = "THOITRANG" })" class="nav-item nav-link">THỜI TRANG </a>
+            <a href="@Url.Action("SanPham", "MUANGAY", new { maPL = "TRANGSUC" })" class="nav-item nav-link">TRANG SỨC</a>
+            <a href="@Url.Action("SanPham", "MUANGAY", new { maPL = "THIETBIDIDONG" })" class="nav-item nav-link">THIẾT BỊ CÔNG NGHỆ</a>
+            <a href="@Url.Action("SanPham", "MUANGAY", new { maPL = "DOGIADUNG" })" class="nav-item nav-link">ĐỒ GIA DỤNG</a>
+            @Html.Action("GioHangPartial", "GioHang")
+            @Html.Action("LoginLogout", "MUANGAY")
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->

@@ -1,0 +1,219 @@
+*{
+  margin:0 auto;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+body{
+  margin: 0 auto;
+}
+.noidung{
+  display: flex;
+  justify-content: center;
+}
+#khoi1{
+  margin: 20px 50px 0px 50px;
+  height: 840px;
+  width: 50%;
+  background-color: aliceblue;
+  border-radius: 10px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12),
+             0 2px 2px rgba(0,0,0,0.12),
+             0 4px 4px rgba(0,0,0,0.12),
+            0 8px 8px rgba(0,0,0,0.12),
+            0 16px 16px rgba(0,0,0,0.12);
+}
+.ttkh{
+  padding: 50px px;
+  width: 90%;
+}
+
+hr{
+  height: 5px;
+  background-color: rgba(210, 105, 30, 0.671);
+  border: none;
+  margin-bottom: 15px;
+  box-shadow: 5px 5px 4px gray
+}
+.thehr{
+  height: 2px;
+  background-color: rgba(54, 36, 22, 0.815);
+  border: none;
+  margin-top: 10px;
+  box-shadow: 2px 2px 2px gray;
+  width: 95%;
+}
+.ttkh> h3{
+  padding-top: 40px;
+  color: chocolate;
+  font-weight: 900;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+.onoidung{
+  margin: 40px 0px;
+}
+.onoidung input{
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid burlywood;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: rgb(7, 123, 201);
+  background: transparent;
+  border-radius: 10px;
+  }
+
+.osubmit>input[type="submit"],
+.osubmit>input[type="reset"]{
+  float: right;
+  margin: 0px 3px;
+  padding: 8px 0px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+
+  border-radius: 10px;
+  width: 70px;
+  text-align: center;
+  background: rgb(233, 174, 97);
+  text-transform: uppercase;
+
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: aliceblue;
+  border: none;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12),
+             0 2px 2px rgba(0,0,0,0.12),
+             0 4px 4px rgba(0,0,0,0.12),
+            0 8px 8px rgba(0,0,0,0.12),
+            0 16px 16px rgba(0,0,0,0.12);
+}
+.osubmit>input[type="submit"]:hover,input[type="reset"]:hover{
+  background: azure;
+  color: chocolate;
+}
+.onoidung p{
+  color: #607d8b;
+}
+.onoidung p a{
+  color: #44caca;
+}
+.osubmit{
+  padding-top: 30px;
+  margin-right: -20px;
+}
+.ghichu> h4{
+  margin-bottom: 5px;
+  font-size: large;
+  color: brown;
+}
+.ghichu>textarea{
+  font-size: 16px;
+  text-indent: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  height: 100px;
+  border: 1px solid chocolate;
+}
+
+
+
+
+#khoi2{
+  margin-top: 20px;
+  margin-right: 70px;
+  height: 500px;
+  width: 35%;
+  background-color: white;
+  border: 2px solid rgba(210, 105, 30, 0.671);
+}
+.donhang{
+  margin-top: 50px;
+  width: 90%;
+}
+.donhang>h3{
+  color: rgb(204, 130, 33);
+  text-align: center;
+  font-size: 25px;
+  padding-bottom: 40px;
+}
+.donhang>p {
+  font-size: small;
+  font-style: italic;
+  padding-bottom: 20px;
+}
+.tong{
+  margin-top: 20px;
+}
+.ott>ul {
+  list-style-type: none ;
+  padding: 5px;
+  width: 90%;
+  border-bottom: 1px solid;
+  display: flex;
+}
+.trong>li{
+  padding: 15px 0px 0px 5px;
+}
+.tieude>li{
+  font-size: 13px;
+  font-weight: 900;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.tieude>li:nth-child(2){
+  text-align: center;
+}
+.o1{
+  width: 120px;
+  text-align: left;
+  font-size: small;
+  margin-left:-5px ;
+}
+.o2{
+  width: 80px;
+  text-align: right;
+  font-size: small;
+  margin-left:-5px ;
+}
+
+.o3{
+  width: 65px;
+  text-align: center;
+  font-size: small;
+  margin-left:-5px ;
+}
+.o4{
+  width: 90px;
+  font-weight: 700;
+  text-align: right;
+  font-size: small;
+  margin-left:-5px ;
+}
+.thanhtoan>input[type="submit"]{
+  float: left;
+  margin: 0px 3px;
+  padding: 20px 0px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+
+  border-radius: 10px;
+  width: 120px;
+  text-align: center;
+  background: rgb(233, 174, 97);
+  text-transform: uppercase;
+
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: aliceblue;
+  border: none;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12),
+             0 2px 2px rgba(0,0,0,0.12),
+             0 4px 4px rgba(0,0,0,0.12),
+            0 8px 8px rgba(0,0,0,0.12),
+            0 16px 16px rgba(0,0,0,0.12);
+}
+.thanhtoan>input[type="submit"]:hover,input[type="reset"]:hover{
+  background: azure;
+  color: chocolate;
+  font-weight: 700;
+}

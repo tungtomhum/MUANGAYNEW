@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewBag.Title = "HoSo";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
+}
+
+<main id="main" class="main">
+
+    <section class="section profile">
+        <div class="row">
+            <div class="col-xl-4">
+
+                <div class="card">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+                        <img style="width: 25%;" src="~/assetsAdmin/img/admin_logo.png" alt="Profile" class="rounded-circle">
+                        <h2>Admin</h2>
+                        <h4>Quản lý hệ thống</h4>
+                        <div class="social-links mt-2">
+                            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-8">
+
+                <div class="card">
+                    <div class="card-body pt-3 w-100">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered">
+
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">THÔNG TIN TÀI KHOẢN</button>
+                            </li>
+
+                            <li class="nav-item">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">ĐỔI MẬT KHẨU</button>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content pt-2">
+
+                            <div class="tab-pane fade show active profile-overview aaaa" id="profile-overview">
+                                <style>
+                                    .aaaa div {
+                                        padding: 10px 50px;
+                                    }
+                                </style>
+
+                                <div class="row">
+                                    <b class="col-lg-3 col-md-4 label">Tên đăng nhập:</b>
+                                    <div class="col-lg-9 col-md-8">@Model.Username</div>
+                                </div>
+                                <div class="row">
+                                    <b class="col-lg-3 col-md-4 label ">Chức vụ:</b>
+                                    <div class="col-lg-9 col-md-8">Quản lý hệ thống</div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade pt-3" id="profile-change-password">
+                                <!-- Change Password Form -->
+                                <form id="changePasswordForm" action="@Url.Action("EditMK", "Home")" method="post">
+                                    <div class="row mb-3">
+                                        <input name="fmaad" type="hidden" class="form-control" value="@Model.MaAdmin">
+                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Mật khẩu mới</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="newpassword" type="password" class="form-control" id="newPassword" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Nhập lại mật khẩu</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="fmk" type="password" class="form-control" id="renewPassword" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    </div>
+                                </form><!-- End Change Password Form -->
+
+                            </div>
+
+                        </div><!-- End Bordered Tabs -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+<!-- Add this script after including jQuery -->
+<!-- Add this script after including jQuery -->
+<script>
+    $(document).ready(function () {
+        // Function to handle the form submission for changing the password
+        $("#changePasswordForm").submit(function (event) {
+            // Get the new password and confirmed password entered by the user
+            var newPassword = $("#newPassword").val();
+            var confirmNewPassword = $("#renewPassword").val();
+
+            // Check if the new password and confirmed password match
+            if (newPassword !== confirmNewPassword) {
+                // Display an alert if the passwords do not match
+                alert("Mật khẩu mới và mật khẩu xác nhận không khớp!");
+                // Prevent the form submission
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+

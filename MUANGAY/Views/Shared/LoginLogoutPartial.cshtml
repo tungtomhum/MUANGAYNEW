@@ -1,0 +1,69 @@
+﻿
+@using MUANGAY.Models
+@{
+    KHACHHANG kh = (KHACHHANG)Session["TaiKhoan"];
+}
+<li class="dropdown pe-3">
+
+    <a class="nav-link nav-profile d-flex align-items-center pe-0 rounded-circle" href="#" data-bs-toggle="dropdown">
+        <img width="48" height="48" src="~/img/us.png" alt="gender-neutral-user--v1" />
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        @if (Session["TaiKhoan"] == null)
+        {
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="~/User/DangNhap">
+                    <i class="bi bi-person"></i>
+                    <span>Đăng nhập</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="~/User/DangKy">
+                    <i class="bi bi-gear"></i>
+                    <span>Đăng ký</span>
+                </a>
+            </li>
+        }
+        @if (Session["TaiKhoan"] != null)
+        {
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="">
+                    <span style="padding-right: 5px;">Xin chào: @kh.HoTen </span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="~/User/HoSo">
+                    <i class="bi bi-person" style="padding-right: 5px;"></i>
+                    <span>Hồ sơ</span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="@Url.Action("LichSuDonHang","GioHang")">
+                    <i class="fa-solid fa-clock-rotate-left" style="padding-right: 5px;"></i>
+                    <span>Lịch sử đơn hàng </span>
+                </a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <a class="dropdown-item d-flex align-items-center" href="@Url.Action("DangXuat","User")">
+                    <i class="fa-solid fa-right-from-bracket" style="padding-right: 5px;"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </li>
+        }
+    </ul>
+</li>
+

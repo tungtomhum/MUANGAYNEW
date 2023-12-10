@@ -1,0 +1,266 @@
+﻿@using MUANGAY.Models
+@model List<GioHang>
+@{
+    ViewBag.Title = "GioHang";
+    Layout = "~/Views/Shared/_LayoutGioHang.cshtml";
+}
+
+<style>
+    /* Định dạng cho bảng */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 2px solid black; /* Đặt màu khung của bảng thành đen */
+    }
+
+    /* Định dạng cho hàng tiêu đề */
+    th {
+        background-color: #9ca1a4;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        padding: 5px;
+    }
+
+    /* Định dạng cho ô trong bảng */
+    td {
+        text-align: center;
+        padding: 5px;
+        border: 1px solid black;
+    }
+
+        /* Định dạng cho hình ảnh */
+        td img {
+            max-width: 100px;
+        }
+
+        /* Định dạng cho ô Tổng số lượng */
+        td[colspan="4"] {
+            text-align: right;
+            color: red;
+            font-weight: bold;
+            padding-right: 5px;
+        }
+
+        /* Định dạng cho ô Tổng tiền */
+        td[colspan="4"] {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+    }
+
+        .quantity input {
+            width: 50px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin: 0;
+        }
+
+        .quantity .btn {
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+            .quantity .btn:hover {
+                background-color: #0056b3;
+            }
+
+    .btn-primary.px-3 {
+        padding: 8px 30px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+        .btn-primary.px-3 i {
+            margin-right: 8px;
+        }
+
+        .btn-primary.px-3:hover {
+            background-color: #0056b3;
+        }
+
+    .d-flex.align-items-center.mb-4.pt-2 {
+        border-top: 1px solid #dee2e6;
+        padding-top: 10px;
+    }
+
+    .fdk {
+        width: 530px;
+        height: 570px;
+        background-image: url('../../assets/images/dk.png');
+        background-size: cover;
+        background-position: center center;
+        margin: 0 auto; /* Để căn giữa ngang */
+    }
+</style>
+
+<!-- Cart Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <a href="javascript:void(0);" onclick="goBack()" class="btn btn-outline-dark" style="margin: 5px;">
+                <i class="fa-solid fa-arrow-left"></i> Quay lại
+            </a>
+
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+            <h2 style="text-align: center; padding-top: 20px">THÔNG TIN GIỎ HÀNG</h2>
+            <form method="post" action="@Url.Action("XoaGioHang", "GioHang")" id="formXoaGioHang">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger mb-1" style="float: right;">
+                    Xóa giỏ hàng
+                </button>
+            </form>
+            <table class="table table-light table-hover text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th style="width: 400px;">SẢN PHẨM</th>
+                        <th style="width: 180px;">ĐƠN GIÁ</th>
+                        <th style="width: 160px;">SỐ LƯỢNG</th>
+                        <th style="width: 200px;">THÀNH TIỀN</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                <p><img src="~/img/@item.sAnhSP" alt="" style="width: 100px;"></p>
+                                <a href="@Url.Action("ChiTietSP","MUANGAY",new {id = item.iMaSP})">@item.sTenSanPham</a>
+                            </td>
+                            @using (Html.BeginForm("CapNhatGioHang", "GioHang", new { iMaSach = item.iMaSP }))
+                            {
+                                string giaTienFormatted = string.Format("{0:#,###}", item.dThanhTien);
+
+                                <td class="align-middle">@string.Format("{0:#,##0,0}", item.dDonGia)</td>
+                                <td class="align-middle">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="display: flex; align-items: center;">
+                                            <button class="btn btn-link px-2"
+                                                    onclick="this.nextElementSibling.stepDown()">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input id="form1" min="1" name="txtSoLuong" value="@item.iSoLuong" type="number"
+                                                   class="form-control form-control-sm" style="width:60px;" />
+                                            <button class="btn btn-link px-2"
+                                                    onclick="this.previousElementSibling.stepUp()">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="align-middle">
+                                    <h5>@giaTienFormatted <b style="color: dimgrey; font-size:large;">VND</b></h5>
+                                </td>
+                                <td class="align-middle">
+                                    <i class="fa-solid fa-trash btn-delete" data-imasach="@item.iMaSP"></i>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <form class="mb-30" action="" id="discountForm">
+                <div class="input-group pt-3">
+                    <input type="text" id="discountCode" class="form-control border-1 p-3 m-1" placeholder="Mã giảm giá">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary p-3 m-1" onclick="applyDiscount()">Áp dụng</button>
+                    </div>
+                </div>
+            </form>
+            <div class="fdk">
+                <h3 class="section-title position-relative text-uppercase mt-3 mb-3 text-center">
+                    <span class="pr-3 text-center">ĐƠN ĐẶT HÀNG</span>
+                </h3>
+                <div>
+                    <style>
+                        .custom-table {
+                            border: none;
+                            width: 75%;
+                        }
+
+                            .custom-table td {
+                                text-align: right;
+                                padding: 20px 50px 10px 0px;
+                                border: none;
+                            }
+                    </style>
+
+                    <div class="pt-4">
+                        <table class="custom-table">
+                            <tr>
+                                <td>Tổng số lượng:</td>
+                                <td>
+                                    @string.Format("{0:#,##0}", @ViewBag.TongSoLuong) <small>Sản phẩm</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tổng tiền:</td>
+                                <td>
+                                    @string.Format("{0:#,##0,0}", @ViewBag.TongTien) <small>VNĐ</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Giảm giá(%):</td>
+                                <td>
+                                    <i id="discountValue" style="color: #13c32e">0</i>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phí vận chuyển:</td>
+                                <td>
+                                    <i style="color: #13c32e">Free</i>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2" style="padding: 30px 60px;">
+                        <h5><b>TỔNG: </b></h5>
+                        <h5><i style="color: red;">@string.Format("{0:#,##0,0}", @ViewBag.TongTien)</i> <b>VNĐ</b></h5>
+                    </div>
+                    <button type="submit" class="btn btn-block btn-outline-primary font-weight-bold my-3 py-3" style="width:70%; margin-left: 70px;">
+                        @{
+                            var linkStyle = "padding: 20px 130px;";
+                        }
+
+                        @Html.ActionLink("ĐẶT HÀNG", "DatHang", "GioHang", null, new { @style = linkStyle })
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+<script>
+    // Assuming you're using jQuery for simplicity
+    $(document).ready(function () {
+        $(".btn-delete").on("click", function () {
+            var iMaSach = $(this).data("imasach");
+            var url = "@Url.Action("XoaSPKhoiGioHang")" + "?iMaSach=" + iMaSach;
+            window.location.href = url;
+        });
+    });
+</script>

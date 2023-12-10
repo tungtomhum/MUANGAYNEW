@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "MUANGAY-Đăng ký thành viên";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<section style="width: 60%; height: 100%; padding: 20px 0px;">
+    <div class="noi-dung">
+        <div class="form">
+            <a href="/"><img class="logo" src="~/img/logo.png"></a>
+            <h2>Đăng Ký Tài khoản </h2>
+            <form action="@Url.Action("DangKy", "User")" method="post" onsubmit="return validateForm()">
+                <div class="input-form">
+                    <input type="text" name="fHoTen" placeholder="Họ và tên" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="email" name="fEmail" placeholder="Email" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="tel" name="fSDT" placeholder="Số điện thoại" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="date" name="fNgaySinh" placeholder="Ngày sinh" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="text" name="fDiaChi" placeholder="Địa chỉ" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="text" name="fTenDN" placeholder="Tên đăng nhập" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="password" name="fMatKhau" id="matkhau" placeholder="Mật khẩu" autocomplete="off" required>
+                </div>
+                <div class="input-form">
+                    <input type="password" name="fNhapLaiMatKhau" id="nhaplaimatkhau" placeholder="Nhập lại mật khẩu" autocomplete="off" required />
+                </div>
+                <div>
+                    <div class="label">
+                        <input id="checkbox" type="checkbox" value="" required>
+                        Tôi đồng ý với các
+                        <a href="#" class="hoverlink">Điều khoản & Dịch vụ</a>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <input type="submit" class="nutdangky" name="submit" id="submit" value="Đăng ký" />
+                </div>
+            </form>
+            <p style="text-align:center;">Bạn đã có sẵn tài khoản ? <a class="hoverlink" href="~/User/DangNhap">Đăng nhập</a></p>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            var password = document.getElementById("matkhau").value;
+            var confirmPassword = document.getElementById("nhaplaimatkhau").value;
+
+            if (password !== confirmPassword) {
+                alert("Mật khẩu nhập lại không khớp");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</section>

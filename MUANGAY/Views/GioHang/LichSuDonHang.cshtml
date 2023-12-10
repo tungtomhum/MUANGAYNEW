@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_LayoutGioHang.cshtml";
+}
+
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div id="error-message" class="alert alert-danger thongbao" style="margin-top: 50px; padding: 40px; width: 30%;">
+        <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #ff0000; padding-right: 20px;"></i> @Html.Raw(ViewBag.ErrorMessage)
+        <br />
+        Không thể xóa đơn hàng này!!!
+    </div>
+}
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            document.getElementById('error-message').style.display = 'none';
+        }, 2000); // 2000 milliseconds = 2 seconds
+    });
+</script>
+
+
+
+
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div id="success-message" class="alert alert-success thongbao" style="margin-top: 50px; padding: 40px; width: 30%;">
+        <i class="fa-solid fa-circle-check fa-2xl" style="color: #00ff11; padding-right: 20px;"></i> @Html.Raw(TempData["SuccessMessage"])
+    </div>
+}
+
+<!-- Move the script to the end of the HTML, just before the closing </body> tag -->
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set a timeout to hide the success message after 3 seconds
+        setTimeout(function () {
+            var successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 2000);
+    });
+</script>
+
+
+
+
+<div style="text-align: center; margin-top: 50px; width: 90%;">
+    <h2 class="m-5">LỊCH SỬ ĐƠN HÀNG</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt hàng</th>
+                <th>Ngày giao hàng</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Tình trạng thanh toán</th>
+                <th class="col-md-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var donHang in Model)
+            {
+                <tr>
+                    <td>@donHang.MaDH</td>
+                    <td>@donHang.NgayDatHang.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@(donHang.NgayGiaoHang != null ? donHang.NgayGiaoHang.ToString("dd/MM/yyyy HH:mm:ss") : "")</td>
+                    <td>@donHang.TongTien.ToString("N0") VND</td>
+                    <td>@donHang.TrangThai</td>
+                    <td>@donHang.ThanhToan</td>
+                    <td>
+                        <form class="row g-3" action="@Url.Action("HuyDon", "GioHang")" method="post">
+                            <input type="hidden" name="madh" value="@donHang.MaDH" /> <!-- Add this line -->
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-eye-@donHang.MaDH">
+                                Xem chi tiết
+                            </button>
+                            <!-- Hien form thong tin -->
+                            <div class="modal fade" id="modal-eye-@donHang.MaDH" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-center">THÔNG TIN ĐƠN HÀNG</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div style="text-align: left;">
+                                                <!-- Nội dung hiện ở đây-->
+                                                <p><strong>Mã đơn hàng:</strong> @donHang.MaDH</p>
+                                                <p><strong>Mã khách hàng:</strong> @donHang.MaKH</p>
+                                                <p><strong>Ngày đặt hàng:</strong> @donHang.NgayDatHang</p>
+                                                <p><strong>Ngày giao hàng:</strong> @donHang.NgayGiaoHang</p>
+                                                <p><strong>Tổng tiền</strong> @donHang.TongTien</p>
+                                                <p><strong>Thanh toán:</strong> @donHang.ThanhToan</p>
+                                                <p><strong>Tình trạng đơn hàng:</strong> @donHang.TrangThai </p>
+                                            </div>
+                                        </div>
+                                        <!-- Inside your modal -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div><!-- End Vertically centered Modal-->
+                            <button type="submit" class="btn btn-outline-danger">Hủy đơn</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

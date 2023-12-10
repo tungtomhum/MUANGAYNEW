@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "MUANGAY-Đăng nhập ";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<section>
+    <div class="noi-dung">
+        <div class="form">
+            <a href="/"><img class="logo" src="~/img/logo.png"></a>
+            <h2>Đăng Nhập </h2>
+            <form action="@Url.Action("DangNhap", "User")" method="post">
+                <h4 style="color: red; margin-bottom: 10px;">@ViewBag.ThongBao</h4>
+                <div class="input-form">
+                    <span>Tên người dùng</span>
+                    <input autocomplete="off" type="text" id="tendangnhap" name="txtTendangnhap">
+                </div>
+                <div class="input-form">
+                    <span>Mật Khẩu</span>
+                    <input type="password" id="matkhau" name="txtMatKhau">
+                </div>
+                <div class="nho-dang-nhap">
+                    <label><input type="checkbox" name=""> Ghi Nhớ Đăng Nhập</label>
+                </div>
+                <div class="input-form">
+                    <input type="submit" onclick="return KiemTraThongTin()" value="Đăng Nhập">
+                </div>
+                <div class="input-form">
+                    <p>Bạn Chưa Có Tài Khoản? <a class="hoverlink" href="~/User/DangKy">Đăng Ký</a></p>
+                </div>
+            </form>
+            <h3>Đăng nhập bằng tài khoản quản lý</h3>
+            <ul class="icon-dang-nhap" style="margin-top: 20px;">
+                <li>
+                    <a href="~/Admin/Home/Login"><img src="~/assetsAdmin/img/admin_logo.png"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,108 @@
+﻿
+@model List<MUANGAY.Models.SANPHAM>
+
+@{
+    ViewBag.Title = "LocPLCT";
+    Layout = "~/Views/Shared/_LayoutMUANGAY.cshtml";
+}
+
+@*Xây dựn một helper tùy chỉnh để cắt độ dài chuỗi*@
+@helper Truncate(string s, int length)
+{
+    if (s.Length < length)
+    {
+        @s
+    }
+    else
+    {
+        @s.Substring(0, length)<text>...</text>
+    }
+}
+<!-- Products Start -->
+<div class="container-fluid pt-5 pb-3" style="width: 85%;" id="dausp">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="pr-3">SẢN PHẨM THEO DANH MỤC - @ViewBag.TenPLCT</span>
+    </h2>
+    @if (Model.Count > 0)
+    {
+        <hr />
+        <div class="row px-xl-5">
+            @foreach (var SP in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item mb-4 khungsp">
+                        <div class="product-img-container">
+                            <div class="img-overlay">
+                                <div class="product-action">
+                                    <a style="width: 150px;" class="btn btn-outline-success btn-square add-to-cart mb-2" href="javascript:void(0);" data-ms="@SP.MaSP" onclick="addToCart(@SP.MaSP)"><i class="fa fa-shopping-cart"></i></a>
+                                    <a style="width: 150px;" class="btn btn-outline-info btn-square" href="@Url.Action("ChiTietSP", "MUANGAY", new { id = SP.MaSP })"><i class="fa fa-info"></i></a>
+                                </div>
+                            </div>
+                            <img class="img-fluid pt-5" style=" width: 100%; height: 100%; object-fit: contain; object-position: center center;" src="~/img/@SP.AnhSP" alt="@SP.TenSanPham">
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration- text-truncate" href="@Url.Action("ChiTietSP", "MUANGAY", new { id = SP.MaSP })">@Html.Raw(Truncate(SP.TenSanPham, 28).ToString())</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                @{
+                                    string giaTienFormatted = string.Format("{0:#,###}", SP.GiaTien);
+                                }
+                                <h5>@giaTienFormatted <b style="color: dimgrey; font-size:large;">VND</b></h5><h6 class="text-muted ml-2"><del>@giaTienFormatted</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small class="fa fa-star text-primary mr-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Display the "404.png" image in the center of the screen -->
+        <div class="text-center">
+            <h3 style="color: red; font-style: italic;">CHƯA CÓ SẢN PHẦM NÀO ĐƯỢC THÊM VÀO</h3>
+            <img style="margin: 100px;" src="~/img/404.jpg" alt="No Products Found" />
+        </div>
+    }
+
+</div>
+<!-- Products End -->
+<script>
+    function addToCart(productId) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ThemGioHangtt", "GioHang")',
+            data: { ms: productId, url: window.location.href },
+            success: function () {
+                showSuccessMessage();
+                updateNavbar();
+            },
+            error: function () {
+                console.log("Lỗi khi thêm vào giỏ hàng.");
+            }
+        });
+    }
+
+    function showSuccessMessage() {
+        $("#success-message").fadeIn().delay(2000).fadeOut();
+    }
+
+    function updateNavbar() {
+        $.get('@Url.Action("GioHangPartial", "GioHang")', function (data) {
+            $('#navbar-content span').text($(data).text());
+        });
+    }
+
+    $(document).ready(function () {
+        $(".add-to-cart").click(function () {
+            var maSP = $(this).data("ms");
+            addToCart(maSP);
+        });
+    });
+</script>

@@ -1,0 +1,124 @@
+﻿@using MUANGAY.Models
+@{
+    ViewBag.Title = "DatHang";
+    Layout = "~/Views/Shared/_LayoutGioHang.cshtml";
+}
+
+<h2 style="text-align:center;">THÔNG TIN ĐƠN HÀNG</h2>
+@{
+    KHACHHANG kh = (KHACHHANG)Session["TaiKhoan"];
+}
+
+<div class="noidung row m-5">
+    <section class="col-md-5" id="" style="height: 100%; padding: 20px 0px; border: 3px double rgb(204, 130, 33); border-radius: 5%; background-color: #aafffc62">
+        <div class="ttkh">
+            <h3 class="text-center">THÔNG TIN KHÁCH HÀNG</h3>
+            <hr>
+            <form>
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+                    <div class="onoidung">
+                        <h6>Họ tên khách hàng</h6>
+                        <input type="text" id="hoten" value="@kh.HoTen" autocomplete="off">
+                    </div>
+                    <div class="onoidung">
+                        <h6>Số điện thoại</h6>
+                        <input type="tel" id="sodienthoai" value="@kh.SoDienThoai" autocomplete="off">
+                    </div>
+                    <div class="onoidung">
+                        <h6>Địa chỉ Email</h6>
+                        <input type="email" id="email" value="@kh.Email" autocomplete="off">
+                    </div>
+                    <div class="ghichu">
+                        <h6>Địa chỉ nhận hàng</h6>
+                        <textarea name="thongtindh" id="thongtindh"> @kh.DiaChi</textarea>
+                    </div>
+                }
+            </form>
+        </div>
+    </section>
+
+
+
+    <section class="col-md-6" style="height: auto; padding: 20px 0px; border: 5px double rgb(204, 130, 33); border-radius: 5%; ">
+        @using (Html.BeginForm("DatHang", "GioHang", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="donhang">
+                <h3>ĐƠN HÀNG CỦA BẠN</h3>
+                <span>
+                    Thời gian: @DateTime.Now
+                </span>
+                <div class="ott">
+                    <ul class="tieude">
+                        <li class="o1">Sản phẩm</li>
+                        <li class="o2">Giá</li>
+                        <li class="o3">Số lượng</li>
+                        <li class="o4">Thành Tiền</li>
+                    </ul>
+                    @foreach (var item in Model)
+                    {
+                        <ul class="trong">
+                            <li class="o1"><img src="~/img/@item.sAnhSP" style="width:50px;"><br />@item.sTenSanPham</li>
+                            <li class="o2">@string.Format("{0:#,##0,0}", @item.dDonGia)</li>
+                            <li class="o3">@item.iSoLuong</li>
+                            <li class="o4">@string.Format("{0:#,##0,0}", @item.dThanhTien)</li>
+                        </ul>
+                    }
+                    <ul class="trong">
+                        <li class="o1">Tổng hóa đơn:</li>
+                        <li class="o2"></li>
+                        <li class="o3"></li>
+                        <li class="o4">@string.Format("{0:#,##0,0}", @ViewBag.TongTien)</li>
+                    </ul>
+                    <ul class="trong">
+                        <li class="o1">Mã giảm giá:</li>
+                        <li class="o2"></li>
+                        <li class="o3"></li>
+                        <li class="o4">0</li>
+                    </ul>
+                    <ul class="trong">
+                        <li class="o1">Phí ship:</li>
+                        <li class="o2"></li>
+                        <li class="o3"></li>
+                        <li class="o4">0</li>
+                    </ul>
+                </div>
+                <div class="tong">
+                    <h5>Tổng số lượng: @ViewBag.TongSoLuong</h5>
+                    <hr class="thehr">
+                    <style>
+                        .select {
+                            width: 100%;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            appearance: none;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            background: url('path/to/arrow.png') no-repeat right center;
+                            background-size: 20px;
+                        }
+                    </style>
+                    <div class="onoidung">
+                        <h6>Chọn phương thức thanh toán <span style="color: red; font-size: larger;">*</span></h6>
+                        <select class="select" name="paymentMethod" id="paymentMethod"  required>
+                            <option selected></option>
+                            <option value="ocd">Thanh toán khi nhận hàng</option>
+                            <option value="banking">Chuyển Khoản</option>
+                        </select>
+                    </div>
+                    <hr class="thehr">
+                </div>
+                <div style="padding-top: 10px; float: right;">
+                    <!-- Use ViewBag.TongTienSauGiamGiaVaShipping to display the total -->
+                    <h3>TỔNG : <span style="font-size: 23px; font-weight: 500;">@string.Format("{0:#,##0,0}", @ViewBag.TongTien) VNĐ</span></h3>
+                </div>
+                <div class="thanhtoan">
+                    <input type="submit" value="ĐẶT HÀNG" class="btDatHang" />
+                </div>
+            </div>
+        }
+    </section>
+</div>

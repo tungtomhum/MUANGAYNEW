@@ -1,0 +1,159 @@
+﻿@model MUANGAY.Models.ChonPL
+
+@{
+    ViewBag.Title = "AddSV";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
+}
+
+
+@using (Html.BeginForm("AddSP", "Home", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>THÊM SẢN PHẨM MỚI</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="~/Admin/Home/Home">Admin</a></li>
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Thêm Sản phẩm mới</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body row g-3 m-4">
+                            <h5 class="card-title">THÔNG TIN SẢN PHẨM</h5>
+
+                            <!-- Floating Labels Form -->
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" placeholder="Tên sản phẩm" name="ftensp" required>
+                                        <label>Tên sản phẩm <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <select name="fmapl" style="height: 50px; background-color: white;" class="form-control" id="maplSelect">
+                                            <option selected></option>
+                                            @foreach (var pl in Model.pldata)
+                                            {
+                                                <option value="@pl.MaPL">@pl.TenLoai</option>
+                                            }
+                                        </select>
+                                        <label for="pl">Phân loại sản phẩm <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <select name="fmaplct" style="height: 50px; background-color: white;" class="form-control" id="maplctSelect" required>
+                                            <option selected></option>
+                                            @foreach (var plct in Model.plctdata)
+                                            {
+                                                <option value="@plct.MaPLCT" data-mapl="@plct.MaPL">@plct.TenPLCT</option>
+                                            }
+                                        </select>
+                                        <label for="plct">Phân loại chi tiết <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <select name="fmath" style="height: 50px; background-color: white;" class="form-control" id="mathSelect" required>
+                                            <option selected></option>
+                                            @foreach (var th in Model.thdata)
+                                            {
+                                                <option value="@th.MaThuongHieu" data-mapl="@th.MaPL">@th.TenThuongHieu</option>
+                                            }
+                                        </select>
+                                        <label for="th">Thương hiệu <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="gt" placeholder="Giá tiền" name="fgia" required>
+                                        <label for="gt">Giá tiền <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="sl" placeholder="Số lượng" name="fsl" required>
+                                        <label for="sl">Số lượng <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="kt" placeholder="Kích thước" name="fkt">
+                                        <label for="kt">Kích thước</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Mô tả" id="floatingTextarea" name="fmota" style="height: 100px;" required></textarea>
+                                        <label for="floatingTextarea">Mô tả sản phẩm <b style="color:red; font-size: 10px;">(*)</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Ảnh sản phẩm:</label>
+                                    <input type="file" class="form-control" name="fFileUpload" />
+                                </div>
+                                <div class="col-12 text-center">
+                                    <a href="~/Admin/Home/QuanLySanPham" type="reset" class="btn btn-secondary">Hủy</a>
+                                    <button type="submit" class="btn btn-primary">THÊM</button>
+                                </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main><!-- End #main -->
+}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Event handler for the change event of the first dropdown
+            $('#maplSelect').change(function () {
+                // Get the selected MaPL value
+                var selectedMaPL = $(this).val();
+
+                // Filter options in the second dropdown based on the selected MaPL
+                $('#maplctSelect option').each(function () {
+                    // Show options that have the same data-mapl attribute value or hide others
+                    if ($(this).data('mapl') == selectedMaPL || selectedMaPL === "") {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // Reset the second dropdown to the default selected option
+                $('#mathSelect').val('');
+
+                // Filter options in the second dropdown based on the selected MaPL
+                $('#mathSelect option').each(function () {
+                    // Show options that have the same data-mapl attribute value or hide others
+                    if ($(this).data('mapl') == selectedMaPL || selectedMaPL === "") {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // Reset the second dropdown to the default selected option
+                $('#mathSelect').val('');
+            });
+        });
+    </script>

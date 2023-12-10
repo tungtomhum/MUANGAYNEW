@@ -1,0 +1,339 @@
+﻿@model IEnumerable<MUANGAY.Models.KHACHHANG>
+
+@{
+    ViewBag.Title = "QuanLyKhachHang";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutHome.cshtml";
+    // Sort the data by NgayBD (start date)
+    var sortedModel = Model != null ? Model.OrderByDescending(a => a.HoTen) : null;
+}
+<!-- Place this at the end of your view -->
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+<!-- Add a common script to initialize CKEditor once -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize CKEditor for each instance
+        var ckeditorInstances = document.querySelectorAll('.ckeditor');
+
+        for (var i = 0; i < ckeditorInstances.length; i++) {
+            var masp = ckeditorInstances[i].getAttribute('data-masp');
+
+            ClassicEditor
+                .create(ckeditorInstances[i])
+                .then(editor => {
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    });
+
+    // Function to update CKEditor content based on the selected modal
+    function updateCKEditorContent(modalId, content) {
+        const editor = ClassicEditor.instances.find(instance => instance.sourceElement.id === 'mota-' + modalId);
+        const modalBody = document.getElementById(modalId).querySelector('.modal-body');
+        const ckeditorDiv = modalBody.querySelector('.ckeditor');
+
+        // Update CKEditor content for the specific modal
+        editor.setData(content, ckeditorDiv);
+    }
+</script>
+
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div id="error-message" class="col-md-12 alert alert-danger thongbao" style="margin-top: 50px; padding: 40px;">
+        <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #ff0000; padding-right: 20px;"></i> @Html.Raw(ViewBag.ErrorMessage)
+        Không thể xóa Khách hàng này!!!
+    </div>
+}
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            document.getElementById('error-message').style.display = 'none';
+        }, 2000); // 2000 milliseconds = 2 seconds
+    });
+</script>
+
+
+
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div id="success-message" class="col-md-12 alert alert-success thongbao" style="margin-top: 50px; padding: 40px;">
+        <i class="fa-solid fa-circle-check fa-2xl" style="color: #00ff11; padding-right: 20px;"></i> @Html.Raw(TempData["SuccessMessage"])
+    </div>
+}
+
+<script>
+    // Wait for the DOM to be ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set a timeout to hide the success message after 3 seconds
+        setTimeout(function () {
+            document.getElementById('success-message').style.display = 'none';
+        }, 2000);
+    });
+</script>
+
+
+
+
+
+@*Xây dựn một helper tùy chỉnh để cắt độ dài chuỗi*@
+@helper Truncate(string s, int length)
+{
+    if (s.Length < length)
+    {
+        @s
+    }
+    else
+    {
+        @s.Substring(0, length)<text>...</text>
+    }
+
+}
+<style>
+
+    #imagePreview {
+        position: relative;
+        padding-top: 20px;
+        max-width: 500px; /* Đặt chiều rộng tối đa của div */
+        overflow: hidden; /* Ẩn phần vượt quá kích thước của div */
+    }
+
+    #previewImage {
+        max-width: 100%; /* Đảm bảo ảnh không vượt quá chiều rộng của div */
+        height: auto; /* Để duy trì tỉ lệ khung hình */
+        display: block; /* Không để ảnh bị đẩy xuống dòng mới */
+        margin: 0 auto; /* Căn giữa ảnh trong div */
+    }
+</style>
+
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>DANH SÁCH KHÁCH HÀNG</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="~/Admin/Home/Home">Admin</a></li>
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item active">Danh sách khách hàng</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body p-3">
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable p-5">
+                            <thead>
+                                <tr>
+                                    <th>Tài khoản</th>
+                                    <th>Họ Tên</th>
+                                    <th>Email</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Ngày sinh</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var kh in sortedModel)
+                                {
+                                    <tr>
+                                        <td>@kh.TaiKhoan</td>
+                                        <td>@Html.Raw(Truncate(kh.HoTen, 30).ToString())</td>
+                                        <td>@kh.Email</td>
+                                        <td>@kh.SoDienThoai</td>
+                                        <td>@Html.Raw(Truncate(kh.DiaChi, 20).ToString())</td>
+                                        <td>@kh.NgaySinh</td>
+
+
+                                        <!--EYE-->
+                                        <td>
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-eye-@kh.MaKH">
+                                                <i class="b-light bi-eye"></i>
+                                            </button>
+                                            <!-- Hien form thong tin -->
+                                            <div class="modal fade" id="modal-eye-@kh.MaKH" tabindex="-1">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="text-center">THÔNG TIN KHÁCH HÀNG</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div>
+                                                                <!-- Nội dung hiện ở đây-->
+                                                                <p><strong>Tài khoản:</strong> @kh.TaiKhoan</p>
+                                                                <p><strong>Mã khách hàng:</strong> @kh.MaKH</p>
+                                                                <p><strong>Họ tên:</strong> @kh.HoTen</p>
+                                                                <p><strong>Email:</strong> @kh.Email</p>
+                                                                <p><strong>Số điện thoại:</strong> @kh.SoDienThoai</p>
+                                                                <p><strong>Địa chỉ:</strong> @kh.DiaChi</p>
+                                                                <p><strong>Ngày sinh:</strong> @kh.NgaySinh</p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Inside your modal -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div><!-- End Vertically centered Modal-->
+                                        </td>
+
+                                        <!--EDIT-->
+                                        <td>
+                                            <!-- Extra Large Modal -->
+                                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modal-edit-@kh.MaKH">
+                                                <i class="b-solid bi-pen"></i>
+                                            </button>
+
+                                            @using (Html.BeginForm("EditKH", "Home", FormMethod.Post, new
+                                            {
+                                                @enctype =
+                                            "multipart/form-data"
+                                            }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <div class="modal fade" id="modal-edit-@kh.MaKH" tabindex="-1">
+                                                    <div class="modal-dialog modal-xl">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="text-center">CHỈNH SỬA THÔNG TIN KHÁCH HÀNG</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Mã khách hàng:</b>
+                                                                    <input type="text" class="form-control" name="fmakh" value="@kh.MaKH" readonly>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Họ tên:</b>
+                                                                    <input type="text" class="form-control" name="ftenkh" value="@kh.HoTen" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Email:</b>
+                                                                    <input type="email" class="form-control" name="femail" value="@kh.Email">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Địa chỉ:</b>
+                                                                    <textarea name="fdiachi" id="mota-@kh.DiaChi" class="ckeditor" data-masp="@kh.MaKH">@kh.DiaChi</textarea>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Số điện thoại:</b>
+                                                                    <input type="tel" class="form-control" name="fsdt" value="@kh.SoDienThoai" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Ngày sinh:</b>
+                                                                    <input type="datetime" class="form-control" name="fngaysinh" value="@kh.NgaySinh" required>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <b class="form-label">Tài khoản:</b>
+                                                                    <input type="text" class="form-control" name="ftaikhoan" value="@kh.TaiKhoan" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                                                                <!-- Add a button for updating -->
+                                                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </td>
+
+
+                                        <!--DELETE-->
+                                        <td>
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-delete-@kh.MaKH">
+                                                <i class="b-solid bi-trash"></i>
+                                            </button>
+                                            <!-- Hien form thong tin -->
+                                            <form class="row g-3 m-4" action="@Url.Action("DeleteKH", "Home")" method="post">
+                                                <div class="modal fade" id="modal-delete-@kh.MaKH" tabindex="-1">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="text-center">XÓA THÔNG TIN KHÁCH HÀNG</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Nội dung hiện ở đây-->
+                                                                <h3 style="color: red;">Bạn có chắc chắn muốn xóa khách hàng này không?</h3>
+                                                                <p><strong>Tài khoản:</strong> @kh.TaiKhoan</p>
+                                                                <p><strong>Mã khách hàng:</strong> @kh.MaKH</p>
+                                                                <input type="hidden" name="makh" value="@kh.MaKH" /> <!-- Add this line -->
+                                                                <p><strong>Họ tên:</strong> @kh.HoTen</p>
+                                                                <p><strong>Email:</strong> @kh.Email</p>
+                                                                <p><strong>Số điện thoại:</strong> @kh.SoDienThoai</p>
+                                                                <p><strong>Địa chỉ:</strong> @kh.DiaChi</p>
+                                                                <p><strong>Ngày sinh:</strong> @kh.NgaySinh</p>
+
+                                                            </div>
+                                                            <!-- Inside your modal -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                                                                <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+<!-- End #main -->
+<script>
+    function previewImage(maSP) {
+        var fileInput = document.getElementById('fileUpload-' + maSP);
+        var preview = document.getElementById('previewImage-' + maSP);
+
+        // Kiểm tra xem người dùng đã chọn tệp tin hay chưa
+        if (fileInput.files && fileInput.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                // Thay đổi thuộc tính src của thẻ hình để hiển thị ảnh mới
+                preview.src = e.target.result;
+            }
+
+            // Đọc tệp tin ảnh
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+</script>
+

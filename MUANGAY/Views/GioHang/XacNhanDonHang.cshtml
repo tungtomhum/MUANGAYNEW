@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "XacNhanDonHang";
+    Layout = "~/Views/Shared/_LayoutGioHang.cshtml";
+}
+
+<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .payment-info {
+
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            max-width: 1000px;
+        }
+
+        .payment-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            color: @ViewBag.color;
+        }
+
+        .payment-details {
+            margin: 10px 0;
+        }
+</style>
+
+<div class="payment-info">
+    <img class="payment-icon" src="@ViewBag.icon" alt="Payment Success Icon">
+    <h2 class="success-message">@ViewBag.Msg</h2>
+    <h5 class="m-3">Vui lòng kiểm tra đơn hàng và tình trạng giao hàng trong lịch sử đơn hàng.</h5>
+    <a class="btn btn-outline-dark" href="@Url.Action("LichSuDonHang", "GioHang")">Xem lịch sử đơn hàng</a>
+</div>
